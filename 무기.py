@@ -4,15 +4,15 @@ pygame.init()
 screen_width = 640 
 screen_height = 480 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Nado Pang")
+pygame.display.set_caption("풍선맟추기")
 clock = pygame.time.Clock()
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, "images")
-background = pygame.image.load(os.path.join(image_path, "background.png"))
-stage = pygame.image.load(os.path.join(image_path, "stage.png"))
+background = pygame.image.load(os.path.join(image_path, "무대배경.png"))
+stage = pygame.image.load(os.path.join(image_path, "배경.png"))
 stage_size = stage.get_rect().size
 stage_height = stage_size[1] 
-character = pygame.image.load(os.path.join(image_path, "character.png"))
+character = pygame.image.load(os.path.join(image_path, "캐릭터.png"))
 character_size = character.get_rect().size
 character_width = character_size[0]
 character_height = character_size[1]
@@ -20,7 +20,7 @@ character_x_pos = (screen_width / 2) - (character_width / 2)
 character_y_pos = screen_height - character_height - stage_height
 character_to_x = 0
 character_speed = 5
-weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
+weapon = pygame.image.load(os.path.join(image_path, "무기.png"))
 weapon_size = weapon.get_rect().size
 weapon_width = weapon_size[0]
 weapons = []

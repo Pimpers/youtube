@@ -4,15 +4,15 @@ pygame.init()
 screen_width = 640 
 screen_height = 480 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Nado Pang")
+pygame.display.set_caption("풍선맟추기")
 clock = pygame.time.Clock()
 current_path = os.path.dirname(__file__) 
-image_path = os.path.join(current_path, "images")
-background = pygame.image.load(os.path.join(image_path, "background.png"))
-stage = pygame.image.load(os.path.join(image_path, "stage.png"))
+image_path = os.path.join(current_path, "images") 
+background = pygame.image.load(os.path.join(image_path, "무대배경.png"))
+stage = pygame.image.load(os.path.join(image_path, "무대.png"))
 stage_size = stage.get_rect().size
-stage_height = stage_size[1] 
-character = pygame.image.load(os.path.join(image_path, "character.png"))
+stage_height = stage_size[1]
+character = pygame.image.load(os.path.join(image_path, "캐릭터.png"))
 character_size = character.get_rect().size
 character_width = character_size[0]
 character_height = character_size[1]
@@ -20,27 +20,25 @@ character_x_pos = (screen_width / 2) - (character_width / 2)
 character_y_pos = screen_height - character_height - stage_height
 character_to_x = 0
 character_speed = 5
-weapon = pygame.image.load(os.path.join(image_path, "weapon.png"))
+weapon = pygame.image.load(os.path.join(image_path, "무기.png"))
 weapon_size = weapon.get_rect().size
 weapon_width = weapon_size[0]
 weapons = []
 weapon_speed = 10
 ball_images = [
-    pygame.image.load(os.path.join(image_path, "balloon1.png")),
-    pygame.image.load(os.path.join(image_path, "balloon2.png")),
-    pygame.image.load(os.path.join(image_path, "balloon3.png")),
-    pygame.image.load(os.path.join(image_path, "balloon4.png"))]
-ball_speed_y = [-18, -15, -12, -9]
+    pygame.image.load(os.path.join(image_path, "풍선1.png")),
+    pygame.image.load(os.path.join(image_path, "풍선2.png")),
+    pygame.image.load(os.path.join(image_path, "풍선3.png")),
+    pygame.image.load(os.path.join(image_path, "풍선4.png"))]
+ball_speed_y = [-18, -15, -12, -9] 
 balls = []
 balls.append({
-    "pos_x" : 50, 
+    "pos_x" : 50,
     "pos_y" : 50, 
-    "img_idx" : 0,
-    "to_x": 3,
+    "img_idx" : 0, 
+    "to_x": 3, 
     "to_y": -6, 
     "init_spd_y": ball_speed_y[0]})
-weapon_to_remove = -1
-ball_to_remove = -1
 running = True
 while running:
     dt = clock.tick(30)
@@ -64,12 +62,13 @@ while running:
         character_x_pos = 0
     elif character_x_pos > screen_width - character_width:
         character_x_pos = screen_width - character_width
-    weapons = [ [w[0], w[1] - weapon_speed] for w in weapons]
+    weapons = [ [w[0], w[1] - weapon_speed] for w in weapons] 
     weapons = [ [w[0], w[1]] for w in weapons if w[1] > 0]
     for ball_idx, ball_val in enumerate(balls):
         ball_pos_x = ball_val["pos_x"]
         ball_pos_y = ball_val["pos_y"]
         ball_img_idx = ball_val["img_idx"]
+
         ball_size = ball_images[ball_img_idx].get_rect().size
         ball_width = ball_size[0]
         ball_height = ball_size[1]
@@ -81,35 +80,6 @@ while running:
             ball_val["to_y"] += 0.5
         ball_val["pos_x"] += ball_val["to_x"]
         ball_val["pos_y"] += ball_val["to_y"]
-    character_rect = character.get_rect()
-    character_rect.left = character_x_pos
-    character_rect.top = character_y_pos
-    for ball_idx, ball_val in enumerate(balls):
-        ball_pos_x = ball_val["pos_x"]
-        ball_pos_y = ball_val["pos_y"]
-        ball_img_idx = ball_val["img_idx"]
-        ball_rect = ball_images[ball_img_idx].get_rect()
-        ball_rect.left = ball_pos_x
-        ball_rect.top = ball_pos_y
-        if character_rect.colliderect(ball_rect):
-            running = False
-            break
-        for weapon_idx, weapon_val in enumerate(weapons):
-            weapon_pos_x = weapon_val[0]
-            weapon_pos_y = weapon_val[1]
-            weapon_rect = weapon.get_rect()
-            weapon_rect.left = weapon_pos_x
-            weapon_rect.top = weapon_pos_y
-            if weapon_rect.colliderect(ball_rect):
-                weapon_to_remove = weapon_idx
-                ball_to_remove = ball_idx 
-                break
-    if ball_to_remove > -1:
-        del balls[ball_to_remove]
-        ball_to_remove = -1
-    if weapon_to_remove > -1:
-        del weapons[weapon_to_remove]
-        weapon_to_remove = -1
     screen.blit(background, (0, 0))
     for weapon_x_pos, weapon_y_pos in weapons:
         screen.blit(weapon, (weapon_x_pos, weapon_y_pos))
